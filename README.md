@@ -10,5 +10,7 @@ FlyGuys is simple cheat for FallGuys written in c++. It's internal but can be ea
 - ESP for not "jinxed" players
 - Unlimited money (probably patched)
 - Support for controllers
+# Updates
+You can just update it easily with ```https://github.com/Perfare/Il2CppDumper``` just put new il2cpp.h and new offsets which you will find in script.json
 # TODO
 You can do a lot of things myself just look into ```character->fields._data``` and have fun.
