@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\sdk">
+      <UniqueIdentifier>{51a569dd-a567-4215-9efb-61f52bc6fc18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\d3d11">
+      <UniqueIdentifier>{66de5eea-5dca-46ad-b268-f3ed2e19b6a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\d3d11\imgui">
+      <UniqueIdentifier>{9e344e18-bb65-4875-81a5-855b56b9c2d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\d3d11\imgui\vendor">
+      <UniqueIdentifier>{997bca83-6143-4112-91a7-cd526aef8261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\d3d11\imgui_extend">
+      <UniqueIdentifier>{a5d5da06-04cd-4a5a-a4c8-9ae9fdadd6e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\menu">
+      <UniqueIdentifier>{fd29ae74-8fa9-4f63-910f-7dbb9f8f94f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\helper">
+      <UniqueIdentifier>{ecbb0d54-9ccd-4823-87c4-29892d879c37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="console.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>src\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>src\d3d11\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>src\d3d11\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="draw_manager.cpp">
+      <Filter>src\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="vector.cpp">
+      <Filter>src\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_extend.cpp">
+      <Filter>src\d3d11\imgui_extend</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>src\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="directx_helper.cpp">
+      <Filter>src\helper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="console.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="unity_sdk.h">
+      <Filter>src\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>src\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.h">
+      <Filter>src\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>src\d3d11\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>src\d3d11\imgui\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>src\d3d11\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="VMTHook.h" />
+    <ClInclude Include="draw_manager.h">
+      <Filter>src\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="vector.h">
+      <Filter>src\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="fnv_hash.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_extend.h">
+      <Filter>src\d3d11\imgui_extend</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>src\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="directx_helper.hpp">
+      <Filter>src\helper</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
