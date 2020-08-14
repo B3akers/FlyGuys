@@ -114,7 +114,7 @@ namespace menu {
 		ImGui::SetWindowSize( { 131,0 }, ImGuiCond_Always );
 		draw_tab( "Misc", misc_tab_active );
 		if ( misc_tab_active ) {
-			draw_button( "Make me rich", settings::cheat::make_me_reach );
+			//draw_button( "Make me rich", settings::cheat::make_me_reach );
 		}
 		ImGui::End( );
 	}

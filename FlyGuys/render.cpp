@@ -77,7 +77,7 @@ bool world_to_screen( const vector& world, vector& screen_out ) {
 
 	d3d_helper::tmpD3DXVec3Project( &screen_v, &world_v, &v_viewport, projection_matrix, view_matrix, &m_world );
 
-	if ( screen_v.z < 0.f ) {
+	if ( screen_v.z < 0.0001f ) {
 		screen_out.x = -1;
 		screen_out.y = -1;
 		return false;
@@ -304,13 +304,16 @@ void update( ) {
 	auto re_input = *reinterpret_cast<Rewired_ReInput_c**>( game::game + signatures::re_input );
 	if ( !re_input )
 		return;
+
 	auto cursor_manager = *reinterpret_cast<CursorManager_c**>( game::game + signatures::cursor_manager );
 	if ( !cursor_manager )
 		return;
+
 	if ( render::menu_is_open ) {
 		cursor_manager->static_fields->_Instance_k__BackingField->fields.usingKeyboard = true;
 		cursor_manager->static_fields->_Instance_k__BackingField->fields.cursorVisible = true;
 	}
+
 	re_input->static_fields->HQLaKohzXRajMoKwSNuhmhfTAmCU = render::menu_is_open; //Rewired_ReInput__get_inputAllowed
 
 	auto global = *reinterpret_cast<MPG_Utility_Singleton_GlobalGameStateClient__c**>( game::game + signatures::global_game_state );
@@ -363,7 +366,7 @@ void update( ) {
 	if ( !game::main_camera )
 		return;
 
-	//patched
+	/*patched
 	if ( settings::cheat::make_me_reach ) {
 		auto catapult_services = *reinterpret_cast<FGClient_CatapultServices_CatapultServices_c**>( game::game + signatures::catapult_services );
 		if ( !catapult_services )
@@ -381,7 +384,7 @@ void update( ) {
 		wallet_service->fields._Wallet_k__BackingField->fields._Crowns_k__BackingField = 10000;
 
 		settings::cheat::make_me_reach = false;
-	}
+	}*/
 
 	auto& io = ImGui::GetIO( );
 
@@ -389,6 +392,7 @@ void update( ) {
 	const constexpr auto round_jinxed = fnv::hash_constexpr( "round_jinxed" );
 	const constexpr auto round_door_dash = fnv::hash_constexpr( "round_door_dash" );
 	const constexpr auto round_tip_toe = fnv::hash_constexpr( "round_tip_toe" );
+	const constexpr auto round_match_fall = fnv::hash_constexpr( "round_match_fall" );
 
 	if ( fnv::hash_runtime( current_state->klass->_1.name ) == StateGameInProgress ) {
 		auto state_game_in_progress = reinterpret_cast<FGClient_StateGameInProgress_o*>( current_state );
@@ -408,27 +412,28 @@ void update( ) {
 			return;
 
 		auto game_level = fnv::whash_runtime( current_game_level->fields.c_str );
-		
-		auto my_player_team_id = -1;	
-		for ( auto i = 0; i < client_game_manager->fields._playerTeamManager->fields._allTeams->fields._size; i++ ) {
-			auto team = client_game_manager->fields._playerTeamManager->fields._allTeams->fields._items->m_Items[ i ];
-			if ( !team )
-				continue;
-			for ( auto y = 0; y < team->fields._members->fields._size; y++ ) {
-				auto player_data = team->fields._members->fields._items->m_Items[ y ];
-				if ( !player_data )
+
+		auto get_character_team_id = [ & ] ( uint32_t net_id ) -> int32_t {
+			for ( auto i = 0; i < client_game_manager->fields._playerTeamManager->fields._allTeams->fields._size; i++ ) {
+				auto team = client_game_manager->fields._playerTeamManager->fields._allTeams->fields._items->m_Items[ i ];
+				if ( !team )
 					continue;
 
-				if ( player_data->fields.objectNetID.fields.m_NetworkID != client_game_manager->fields._myPlayerNetID.fields.m_NetworkID )
-					continue;
+				for ( auto y = 0; y < team->fields._members->fields._size; y++ ) {
+					auto player_data = team->fields._members->fields._items->m_Items[ y ];
+					if ( !player_data )
+						continue;
 
-				my_player_team_id = player_data->fields.TeamID;
-				break;
+					if ( player_data->fields.objectNetID.fields.m_NetworkID != net_id )
+						continue;
+
+					return player_data->fields.TeamID;
+				}
 			}
+			return -1;
+		};
 
-			if ( my_player_team_id != -1)
-				break;
-		}
+		auto my_player_team_id = get_character_team_id( client_game_manager->fields._myPlayerNetID.fields.m_NetworkID );
 
 		for ( auto i = 0; i < player_list->fields.count; i++ ) {
 			auto character = reinterpret_cast<FallGuysCharacterController_o*>( player_list->fields.entries->m_Items[ i ].fields.value );
@@ -450,6 +455,8 @@ void update( ) {
 
 					if ( io.KeysDown[ 0x57 ] || io.NavInputs[ ImGuiNavInput_LStickUp ] > 0.f )
 						*veloctiy = direction * settings::movement::fly_speed;
+					else
+						*veloctiy = vector( 0, 0, 0 );
 
 					if ( io.KeysDown[ VK_SPACE ] || io.NavInputs[ ImGuiNavInput_Activate ] > 0.f )
 						veloctiy->z = settings::movement::fly_speed;
@@ -467,9 +474,6 @@ void update( ) {
 				character->fields._data->fields.anyCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_anyCollisionStunForce;
 				character->fields._data->fields.dynamicCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_dynamicCollisionStunForce;
 
-				//add option in menu
-				character->fields._data->fields.carryPickupDuration = 0.f;
-
 				character->fields._ragdollController->fields.CollisionThreshold = settings::movement::disable_object_collisions ? FLT_MAX : default_CollisionThreshold;
 				if ( settings::movement::disable_object_collisions )
 					character->fields._ragdollController->fields.CollisionUpperBodyTransfer = 0.f;
@@ -485,19 +489,22 @@ void update( ) {
 				}
 			} else {
 				if ( game_level == round_jinxed ) {
-					if ( !character->fields._ActiveTagAccessory_k__BackingField
-						|| std::uintptr_t( character->fields._ActiveTagAccessory_k__BackingField ) != std::uintptr_t( character->fields._infectedAccessory )
-						|| !character->fields._ActiveTagAccessory_k__BackingField->fields._isAccessoryEnabled ) {
-						vector vec_min, vec_max;
-						if ( get_bounding_box2d( character->fields._collider, vec_min, vec_max ) )
-							draw_manager::add_rect_on_screen( vec_min, vec_max, ImColor( 1.f, 0.f, 0.f ), 0.f, -1, 5.f );
+					if ( get_character_team_id( (uint32_t)player_list->fields.entries->m_Items[ i ].fields.key ) != my_player_team_id ) {
+						if ( !character->fields._ActiveTagAccessory_k__BackingField
+							|| std::uintptr_t( character->fields._ActiveTagAccessory_k__BackingField ) != std::uintptr_t( character->fields._infectedAccessory )
+							|| !character->fields._ActiveTagAccessory_k__BackingField->fields._isAccessoryEnabled ) {
+							vector vec_min, vec_max;
+							if ( get_bounding_box2d( character->fields._collider, vec_min, vec_max ) )
+								draw_manager::add_rect_on_screen( vec_min, vec_max, ImColor( 1.f, 0.f, 0.f ), 0.f, -1, 5.f );
+						}
 					}
 				}
 			}
 		}
 
 		if ( game_level == round_door_dash ||
-			game_level == round_tip_toe ) {
+			game_level == round_tip_toe ||
+			game_level == round_match_fall ) {
 			auto gameobjectmanager = *reinterpret_cast<game_object_manager**>( game::unity + signatures::game_object_manager );
 			for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {
 				auto current_object = i->object;
@@ -508,6 +515,8 @@ void update( ) {
 					if ( component_size > 1 && components_ptr ) {
 						RealDoorController_o* real_door = nullptr;
 						TipToe_Platform_o* tiptoe_platform = nullptr;
+						MatchFallManager_o* match_fall_manager = nullptr;
+
 						for ( auto compoment_index = 0; compoment_index < component_size; compoment_index++ ) {
 							auto current_compoment = *reinterpret_cast<uintptr_t*>( components_ptr + ( compoment_index * 0x10 ) + 0x8 );
 							if ( !current_compoment )
@@ -524,6 +533,9 @@ void update( ) {
 									break;
 								case fnv::hash_constexpr( "TipToe_Platform" ):
 									tiptoe_platform = reinterpret_cast<TipToe_Platform_o*>( compoment_mono );
+									break;
+								case fnv::hash_constexpr( "MatchFallManager" ):
+									match_fall_manager = reinterpret_cast<MatchFallManager_o*>( compoment_mono );
 									break;
 							}
 						}
@@ -551,6 +563,20 @@ void update( ) {
 							if ( world_to_screen( world, screen ) )
 								draw_manager::add_filled_rect_on_screen( screen, screen + vector( 15, 15 ), ImColor( 1.f, 0.f, 0.f ) );
 						}
+
+						if ( match_fall_manager ) {
+							for ( auto j = 0; j < match_fall_manager->fields.Tiles->fields._size; j++ ) {
+								auto tile = match_fall_manager->fields.Tiles->fields._items->m_Items[ j ];
+								if ( !tile )
+									continue;
+
+								if ( tile->fields._tileSurfaceOnObject )
+									reinterpret_cast<void( __stdcall* )( void*, bool, void* )>( game::unity + signatures::game_object_custom_set_active )( tile->fields._tileSurfaceOnObject, true, 0 );
+
+								if ( tile->fields._tileSurfaceOffObject )
+									reinterpret_cast<void( __stdcall* )( void*, bool, void* )>( game::unity + signatures::game_object_custom_set_active )( tile->fields._tileSurfaceOffObject, false, 0 );
+							}
+						}
 					}
 				}
 			}
@@ -564,15 +590,28 @@ void update( ) {
 		for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {
 			auto current_object = i->object;
 			if ( current_object ) {
+				auto component_size = *reinterpret_cast<int32_t*>( std::uintptr_t( current_object ) + unity::components_size );
+				auto components_ptr = *reinterpret_cast<uintptr_t*>( std::uintptr_t( current_object ) + unity::components_ptr );
+				if ( component_size > 1 && components_ptr ) {
+					for ( auto compoment_index = 0; compoment_index < component_size; compoment_index++ ) {
+						auto current_compoment = *reinterpret_cast<uintptr_t*>( components_ptr + ( compoment_index * 0x10 ) + 0x8 );
+						if ( !current_compoment )
+							continue;
+						auto compoment_mono = *reinterpret_cast<Il2CppObject**>( current_compoment + unity::mono_ptr );
+						if ( !compoment_mono || reinterpret_cast<Il2CppClass*>( compoment_mono->klass ) != compoment_mono->klass->_1.klass )
+							continue;
+
+						auto class_name = fnv::hash_runtime( compoment_mono->klass->_1.name );
+					}
+				}
 				auto transform = *reinterpret_cast<uintptr_t*>( std::uintptr_t( current_object ) + unity::components_ptr );
 				if ( transform ) {
 					transform = *reinterpret_cast<uintptr_t*>( transform + unity::transform_compoment );
 					if ( transform ) {
 						auto transform_mono = *reinterpret_cast<UnityEngine_Transform_o**>( transform + unity::mono_ptr );
-
 						if ( transform_mono ) {
 							if ( !strstr( transform_mono->klass->_1.name, "Rect" ) ) {
-								auto position = vector( ); reinterpret_cast<vector* ( __stdcall* )( vector*, UnityEngine_Transform_o*, void* )>( game::game + 0x0013C3990 )( &position, transform_mono, 0 );
+								auto position = get_position( transform );
 								auto screen = vector( );
 								if ( world_to_screen( position, screen ) ) {
 									draw_manager::add_text_on_screen( screen, ImColor( 0.f, 0.f, 0.f ), 19, "%s", current_object->get_name( ) );

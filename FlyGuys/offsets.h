@@ -3,6 +3,7 @@
 
 namespace signatures {
 	enum values {
+		game_object_custom_set_active = 0x092B600,
 		get_main_camera = 0x0909890,
 		swap_chain = 0x0462B20,
 		game_object_manager = 0x17B70E8,
