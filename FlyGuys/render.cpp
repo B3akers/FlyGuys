@@ -547,6 +547,11 @@ void update( ) {
 						}
 					}
 				}
+				if (settings::cheat::player_esp_enabled) {
+					vector vec_min, vec_max;
+					if (get_bounding_box2d(character->fields._collider, vec_min, vec_max))
+						draw_manager::add_rect_on_screen(vec_min, vec_max, ImColor(0.f, 1.f, 0.f), 0.f, -1, 2.f);
+				}
 			}
 		}
 
