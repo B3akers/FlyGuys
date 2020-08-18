@@ -491,8 +491,9 @@ void update( ) {
 				if(settings::cheat::player_esp_enabled){
 					vector vec_min, vec_max;
 					if (get_bounding_box2d(character->fields._collider, vec_min, vec_max))
-						draw_manager::add_rect_on_screen(vec_min, vec_max, ImColor(1.f, 0.f, 0.f), 0.f, -1, 5.f);
-				} else if ( game_level == round_jinxed ) {
+						draw_manager::add_rect_on_screen(vec_min, vec_max, ImColor(0.f, 1.f, 0.f), 0.f, -1, 2.f);
+				}
+				if ( game_level == round_jinxed ) {
 					if ( get_character_team_id( (uint32_t)player_list->fields.entries->m_Items[ i ].fields.key ) != my_player_team_id ) {
 						if ( !character->fields._ActiveTagAccessory_k__BackingField
 							|| std::uintptr_t( character->fields._ActiveTagAccessory_k__BackingField ) != std::uintptr_t( character->fields._infectedAccessory )
