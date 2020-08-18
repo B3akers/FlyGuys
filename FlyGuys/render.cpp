@@ -506,7 +506,11 @@ void update( ) {
 			game_level == round_tip_toe ||
 			game_level == round_match_fall ) {
 			auto gameobjectmanager = *reinterpret_cast<game_object_manager**>( game::unity + signatures::game_object_manager );
-			for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {
+			for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {	
+			
+				if ( !i )
+					break;
+
 				auto current_object = i->object;
 				if ( current_object ) {
 					auto component_size = *reinterpret_cast<int32_t*>( std::uintptr_t( current_object ) + unity::components_size );
