@@ -175,29 +175,31 @@ namespace menu {
 			settings::movement::fly_enabled = !settings::movement::fly_enabled;
 			cheat_helper::disable_fly = !settings::movement::fly_enabled;
 		}
+
 		if ( io.KeysDown[ 0x43 ] && !OldKeysDown[ 0x43 ] ) {
 			settings::movement::speed_enabled = !settings::movement::speed_enabled;
 			cheat_helper::disable_speed = !settings::movement::speed_enabled;
 		}
+
 		if ( io.KeysDown[ 0x58 ] && !OldKeysDown[ 0x58 ] ) {
 			settings::cheat::player_esp_enabled = !settings::cheat::player_esp_enabled;
-
-			if ( io.KeysDown[ 0x47 ] && !OldKeysDown[ 0x47 ] ) {
-				settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
-
-			}
-
-			if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
-				settings::movement::speed_enabled = true;
-				cheat_helper::disable_speed = false;
-			} else if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] == 0.f && OldNavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
-				settings::movement::speed_enabled = false;
-				cheat_helper::disable_speed = true;
-			}
-
-			memcpy( OldKeysDown, io.KeysDown, 512 * sizeof( bool ) );
-			memcpy( OldNavInputs, io.NavInputs, ImGuiNavInput_COUNT * sizeof( float ) );
 		}
+
+		if ( io.KeysDown[ 0x47 ] && !OldKeysDown[ 0x47 ] ) {
+			settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
+		}
+
+		if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
+			settings::movement::speed_enabled = true;
+			cheat_helper::disable_speed = false;
+		} else if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] == 0.f && OldNavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
+			settings::movement::speed_enabled = false;
+			cheat_helper::disable_speed = true;
+		}
+
+		memcpy( OldKeysDown, io.KeysDown, 512 * sizeof( bool ) );
+		memcpy( OldNavInputs, io.NavInputs, ImGuiNavInput_COUNT * sizeof( float ) );
+
 	}
 
 	void update_indicators( ) {
