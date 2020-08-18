@@ -56,6 +56,7 @@ const float default_playerGrabRegrabDelay = 2.0f;
 const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
 const float default_forceReleaseRegrabCooldown = 1.0f;
 const float default_breakGrabAngle = 75.0f;
+const float default_playerGrabbeeMaxForce = 1.0f;
 
 namespace game {
 	uintptr_t game = 0;
@@ -459,14 +460,15 @@ void update( ) {
 				auto character_transform = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( game_object + unity::components_ptr ) + unity::transform_compoment );
 				
 				if (settings::cheat::super_grab_enabled) {
-					int largeInt = 2147483647;
-					character->fields._data->fields.playerGrabDetectRadius = largeInt;
-					character->fields._data->fields.playerGrabCheckDistance = largeInt;
-					character->fields._data->fields.playerGrabberMaxForce = largeInt;
-					character->fields._data->fields.playerGrabBreakTime = largeInt;
-					character->fields._data->fields.armLength = largeInt;
-					character->fields._data->fields.playerGrabCheckPredictionBase = largeInt;
-					character->fields._data->fields.playerGrabImmediateVelocityReduction = 0;
+					character->fields._data->fields.playerGrabDetectRadius = FLT_MAX;
+					character->fields._data->fields.playerGrabCheckDistance = FLT_MAX;
+					character->fields._data->fields.playerGrabberMaxForce = FLT_MAX;
+					character->fields._data->fields.playerGrabBreakTime = FLT_MAX;
+					character->fields._data->fields.armLength = FLT_MAX;
+					character->fields._data->fields.playerGrabCheckPredictionBase = FLT_MAX;
+					character->fields._data->fields.playerGrabMaxHeightDifference = FLT_MAX;
+					character->fields._data->fields.playerGrabbeeMaxForce = 0;
+					character->fields._data->fields.playerGrabImmediateVelocityReduction = 1;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
 					character->fields._data->fields.grabCooldown = 0;
 					character->fields._data->fields.playerGrabRegrabDelay = 0;
@@ -487,6 +489,7 @@ void update( ) {
 					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = default_playerGrabBreakTimeJumpInfluence;
 					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
 					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
+					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
 				}
 
 				if ( settings::movement::fly_enabled ) {
