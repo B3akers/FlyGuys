@@ -467,10 +467,8 @@ void update( ) {
 					character->fields._data->fields.armLength = FLT_MAX;
 					character->fields._data->fields.playerGrabCheckPredictionBase = FLT_MAX;
 					character->fields._data->fields.playerGrabMaxHeightDifference = FLT_MAX;
-					character->fields._data->fields.playerGrabberVelocityComponent = 1;
-					character->fields._data->fields.playerGrabbeeVelocityComponent = 0;
 					character->fields._data->fields.playerGrabbeeMaxForce = 0;
-					character->fields._data->fields.playerGrabImmediateVelocityReduction = 1;
+					character->fields._data->fields.playerGrabImmediateVelocityReduction = 0;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
 					character->fields._data->fields.grabCooldown = 0;
 					character->fields._data->fields.playerGrabRegrabDelay = 0;
