@@ -43,6 +43,20 @@ const float default_CollisionThreshold = 14.000000f;
 const float default_carryMaxSpeed = 8.000000f;
 const float default_carryPickupDuration = 0.100000f;
 
+const float default_playerGrabDetectRadius = 6.0f;
+const float default_playerGrabCheckDistance = 2.0f;
+const float default_playerGrabberMaxForce = 0.6000000238f;
+const float default_playerGrabBreakTime = 1.200000048f;
+const float default_armLength = 1.0f;
+const float default_playerGrabCheckPredictionBase = 0.1000000015f;
+const float default_playerGrabImmediateVelocityReduction = 0.5f;
+const float default_playerGrabberDragDirectionContribution = 0.50f;
+const float default_grabCooldown = 0.5f;
+const float default_playerGrabRegrabDelay = 2.0f;
+const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
+const float default_forceReleaseRegrabCooldown = 1.0f;
+const float default_breakGrabAngle = 75.0f;
+
 namespace game {
 	uintptr_t game = 0;
 	uintptr_t unity = 0;
@@ -443,6 +457,37 @@ void update( ) {
 			if ( character->fields._IsLocalPlayer_k__BackingField ) {
 				auto game_object = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( std::uintptr_t( character ) + unity::native_ptr ) + unity::compoment_owner );
 				auto character_transform = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( game_object + unity::components_ptr ) + unity::transform_compoment );
+				
+				if (settings::cheat::super_grab_enabled) {
+					int largeInt = 2147483647;
+					character->fields._data->fields.playerGrabDetectRadius = largeInt;
+					character->fields._data->fields.playerGrabCheckDistance = largeInt;
+					character->fields._data->fields.playerGrabberMaxForce = largeInt;
+					character->fields._data->fields.playerGrabBreakTime = largeInt;
+					character->fields._data->fields.armLength = largeInt;
+					character->fields._data->fields.playerGrabCheckPredictionBase = largeInt;
+					character->fields._data->fields.playerGrabImmediateVelocityReduction = 0;
+					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
+					character->fields._data->fields.grabCooldown = 0;
+					character->fields._data->fields.playerGrabRegrabDelay = 0;
+					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = 0;
+					character->fields._data->fields.forceReleaseRegrabCooldown = 0;
+					character->fields._data->fields.breakGrabAngle = 360;
+				} else {
+					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
+					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
+					character->fields._data->fields.playerGrabberMaxForce = default_playerGrabberMaxForce;
+					character->fields._data->fields.playerGrabBreakTime = default_playerGrabBreakTime;
+					character->fields._data->fields.armLength = default_armLength;
+					character->fields._data->fields.playerGrabCheckPredictionBase = default_playerGrabCheckPredictionBase;
+					character->fields._data->fields.playerGrabImmediateVelocityReduction = default_playerGrabImmediateVelocityReduction;
+					character->fields._data->fields.playerGrabberDragDirectionContribution = default_playerGrabberDragDirectionContribution;
+					character->fields._data->fields.grabCooldown = default_grabCooldown;
+					character->fields._data->fields.playerGrabRegrabDelay = default_playerGrabRegrabDelay;
+					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = default_playerGrabBreakTimeJumpInfluence;
+					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
+					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
+				}
 
 				if ( settings::movement::fly_enabled ) {
 					character->fields._ApplyGravity_k__BackingField = false;

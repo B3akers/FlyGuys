@@ -20,6 +20,7 @@ namespace settings {
 	namespace cheat {
 		bool make_me_reach = false;
 		bool player_esp_enabled = false;
+		bool super_grab_enabled = false;
 	};
 };
 namespace cheat_helper {
@@ -116,7 +117,8 @@ namespace menu {
 		draw_tab( "Misc", misc_tab_active );
 		if ( misc_tab_active ) {
 			//draw_button( "Make me rich", settings::cheat::make_me_reach );
-			draw_button( "Player ESP", settings::cheat::player_esp_enabled);
+			draw_button("Player ESP", settings::cheat::player_esp_enabled);
+			draw_button("Super grab", settings::cheat::super_grab_enabled);
 		}
 		ImGui::End( );
 	}
@@ -177,8 +179,13 @@ namespace menu {
 			settings::movement::speed_enabled = !settings::movement::speed_enabled;
 			cheat_helper::disable_speed = !settings::movement::speed_enabled;
 		}
+
 		if (io.KeysDown[0x58] && !OldKeysDown[0x58]) {
 			settings::cheat::player_esp_enabled = !settings::cheat::player_esp_enabled;
+		}
+
+		if (io.KeysDown[0x47] && !OldKeysDown[0x47]) {
+			settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
 		}
 
 		if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
@@ -205,8 +212,14 @@ namespace menu {
 			draw_manager::add_text_on_screen( { 10,y }, 0xFFFFFFFF, 18, "Speed [C]" );
 			y += text_size.y + 4.f;
 		}
+
 		if (settings::cheat::player_esp_enabled) {
-			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Player ESP [X]");
+			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Player ESP [X]");\
+			y += text_size.y + 4.f;
+		}
+
+		if (settings::cheat::super_grab_enabled) {
+			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Super Grab [G]");
 			y += text_size.y + 4.f;
 		}
 		if ( settings::movement::disable_stun_collision ) {
