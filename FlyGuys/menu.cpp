@@ -117,8 +117,8 @@ namespace menu {
 		draw_tab( "Misc", misc_tab_active );
 		if ( misc_tab_active ) {
 			//draw_button( "Make me rich", settings::cheat::make_me_reach );
-			draw_button( "Player ESP", settings::cheat::player_esp_enabled);
-			draw_button("Super grab", settings::cheat::super_grab_enabled);
+			draw_button( "Player ESP", settings::cheat::player_esp_enabled );
+			draw_button( "Super grab", settings::cheat::super_grab_enabled );
 		}
 		ImGui::End( );
 	}
@@ -179,24 +179,25 @@ namespace menu {
 			settings::movement::speed_enabled = !settings::movement::speed_enabled;
 			cheat_helper::disable_speed = !settings::movement::speed_enabled;
 		}
-		if (io.KeysDown[0x58] && !OldKeysDown[0x58]) {
+		if ( io.KeysDown[ 0x58 ] && !OldKeysDown[ 0x58 ] ) {
 			settings::cheat::player_esp_enabled = !settings::cheat::player_esp_enabled;
-      
-		if (io.KeysDown[0x47] && !OldKeysDown[0x47]) {
-			settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
 
+			if ( io.KeysDown[ 0x47 ] && !OldKeysDown[ 0x47 ] ) {
+				settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
+
+			}
+
+			if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
+				settings::movement::speed_enabled = true;
+				cheat_helper::disable_speed = false;
+			} else if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] == 0.f && OldNavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
+				settings::movement::speed_enabled = false;
+				cheat_helper::disable_speed = true;
+			}
+
+			memcpy( OldKeysDown, io.KeysDown, 512 * sizeof( bool ) );
+			memcpy( OldNavInputs, io.NavInputs, ImGuiNavInput_COUNT * sizeof( float ) );
 		}
-
-		if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
-			settings::movement::speed_enabled = true;
-			cheat_helper::disable_speed = false;
-		} else if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] == 0.f && OldNavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
-			settings::movement::speed_enabled = false;
-			cheat_helper::disable_speed = true;
-		}
-
-		memcpy( OldKeysDown, io.KeysDown, 512 * sizeof( bool ) );
-		memcpy( OldNavInputs, io.NavInputs, ImGuiNavInput_COUNT * sizeof( float ) );
 	}
 
 	void update_indicators( ) {
@@ -212,16 +213,16 @@ namespace menu {
 			y += text_size.y + 4.f;
 		}
 
-    if (settings::cheat::player_esp_enabled) {
-			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Player ESP [X]");
-      y += text_size.y + 4.f;
-    }
-    
-		if (settings::cheat::super_grab_enabled) {
-			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Super Grab [G]");
+		if ( settings::cheat::player_esp_enabled ) {
+			draw_manager::add_text_on_screen( { 10,y }, 0xFFFFFFFF, 18, "Player ESP [X]" );
 			y += text_size.y + 4.f;
 		}
-      
+
+		if ( settings::cheat::super_grab_enabled ) {
+			draw_manager::add_text_on_screen( { 10,y }, 0xFFFFFFFF, 18, "Super Grab [G]" );
+			y += text_size.y + 4.f;
+		}
+
 		if ( settings::movement::disable_stun_collision ) {
 			draw_manager::add_text_on_screen( { 10,y }, 0xFFFFFFFF, 18, "No Stun" );
 			y += text_size.y + 4.f;
