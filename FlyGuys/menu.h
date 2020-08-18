@@ -14,6 +14,7 @@ namespace settings {
 
 	namespace cheat {
 		extern bool make_me_reach;
+		extern bool player_esp_enabled;
 	};
 };
 namespace cheat_helper {
