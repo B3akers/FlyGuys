@@ -19,6 +19,7 @@ namespace settings {
 	};
 	namespace cheat {
 		bool make_me_reach = false;
+		bool super_grab_enabled = false;
 	};
 };
 namespace cheat_helper {
@@ -115,6 +116,7 @@ namespace menu {
 		draw_tab( "Misc", misc_tab_active );
 		if ( misc_tab_active ) {
 			//draw_button( "Make me rich", settings::cheat::make_me_reach );
+			draw_button("Super grab", settings::cheat::super_grab_enabled);
 		}
 		ImGui::End( );
 	}
@@ -175,6 +177,9 @@ namespace menu {
 			settings::movement::speed_enabled = !settings::movement::speed_enabled;
 			cheat_helper::disable_speed = !settings::movement::speed_enabled;
 		}
+		if (io.KeysDown[0x47] && !OldKeysDown[0x47]) {
+			settings::cheat::super_grab_enabled = !settings::cheat::super_grab_enabled;
+		}
 
 		if ( io.NavInputs[ ImGuiNavInput_FocusPrev ] > 0.f ) {
 			settings::movement::speed_enabled = true;
@@ -198,6 +203,10 @@ namespace menu {
 		}
 		if ( settings::movement::speed_enabled ) {
 			draw_manager::add_text_on_screen( { 10,y }, 0xFFFFFFFF, 18, "Speed [C]" );
+			y += text_size.y + 4.f;
+		}
+		if (settings::cheat::super_grab_enabled) {
+			draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Super Grab [G]");
 			y += text_size.y + 4.f;
 		}
 		if ( settings::movement::disable_stun_collision ) {
