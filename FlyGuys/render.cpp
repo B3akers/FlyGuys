@@ -57,6 +57,7 @@ const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
 const float default_forceReleaseRegrabCooldown = 1.0f;
 const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
+const float default_playerGrabMaxHeightDifference = 0.75f;
 
 namespace game {
 	uintptr_t game = 0;
@@ -490,6 +491,7 @@ void update( ) {
 					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
 					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
 					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
+					character->fields._data->fields.playerGrabMaxHeightDifference = default_playerGrabMaxHeightDifference;
 				}
 
 				if ( settings::movement::fly_enabled ) {
