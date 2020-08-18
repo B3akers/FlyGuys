@@ -459,13 +459,12 @@ void update( ) {
 				auto character_transform = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( game_object + unity::components_ptr ) + unity::transform_compoment );
 				
 				if (settings::cheat::super_grab_enabled) {
-					int largeInt = 2147483647;
-					character->fields._data->fields.playerGrabDetectRadius = largeInt;
-					character->fields._data->fields.playerGrabCheckDistance = largeInt;
-					character->fields._data->fields.playerGrabberMaxForce = largeInt;
-					character->fields._data->fields.playerGrabBreakTime = largeInt;
-					character->fields._data->fields.armLength = largeInt;
-					character->fields._data->fields.playerGrabCheckPredictionBase = largeInt;
+					character->fields._data->fields.playerGrabDetectRadius = INT_MAX;
+					character->fields._data->fields.playerGrabCheckDistance = INT_MAX;
+					character->fields._data->fields.playerGrabberMaxForce = INT_MAX;
+					character->fields._data->fields.playerGrabBreakTime = INT_MAX;
+					character->fields._data->fields.armLength = INT_MAX;
+					character->fields._data->fields.playerGrabCheckPredictionBase = INT_MAX;
 					character->fields._data->fields.playerGrabImmediateVelocityReduction = 0;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
 					character->fields._data->fields.grabCooldown = 0;
