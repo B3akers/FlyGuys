@@ -14,6 +14,7 @@ namespace settings {
 
 	namespace cheat {
 		extern bool make_me_reach;
+		extern bool super_grab_enabled;
 	};
 };
 namespace cheat_helper {
