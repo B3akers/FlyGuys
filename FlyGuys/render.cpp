@@ -39,6 +39,14 @@ const float default_max_speed = 9.500000f;
 
 const float default_anyCollisionStunForce = 28.000000f;
 const float default_dynamicCollisionStunForce = 10.000000f;
+const float default_stumbleBackAngle = 80.0f;
+const float default_fallOverAngle = 30.0f;
+const float default_collisionPlayerToPlayerUnpinMultiplier = 0.200000003f;
+const float default_minStunTime = 0.1000000015f;
+const float default_maxGroundedStunTime = 5.0f;
+const float default_SmallImpactMinForceThreshold = 8.0f;
+const float default_MediumImpactMinForceThreshold = 10.0f;
+const float default_LargeImpactMinForceThreshold = 2000.0f;
 const float default_CollisionThreshold = 14.000000f;
 const float default_carryMaxSpeed = 8.000000f;
 const float default_carryPickupDuration = 0.100000f;
@@ -519,8 +527,30 @@ void update( ) {
 					cheat_helper::disable_fly = false;
 				}
 
-				character->fields._data->fields.anyCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_anyCollisionStunForce;
-				character->fields._data->fields.dynamicCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_dynamicCollisionStunForce;
+				if (settings::movement::disable_stun_collision) {
+					character->fields._data->fields.stumbleBackAngle = 0.f;
+					character->fields._data->fields.fallOverAngle = 0.f;
+					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = 0.f;
+					character->fields._data->fields.minStunTime = 0.f;
+					character->fields._data->fields.maxGroundedStunTime = 0.f;
+					character->fields._data->fields.SmallImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.MediumImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.LargeImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.anyCollisionStunForce = FLT_MAX;
+					character->fields._data->fields.dynamicCollisionStunForce = FLT_MAX;
+				}
+				else {
+					character->fields._data->fields.stumbleBackAngle = default_stumbleBackAngle;
+					character->fields._data->fields.fallOverAngle = default_fallOverAngle;
+					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = default_collisionPlayerToPlayerUnpinMultiplier;
+					character->fields._data->fields.minStunTime = default_minStunTime;
+					character->fields._data->fields.maxGroundedStunTime = default_maxGroundedStunTime;
+					character->fields._data->fields.SmallImpactMinForceThreshold = default_SmallImpactMinForceThreshold;
+					character->fields._data->fields.MediumImpactMinForceThreshold = default_MediumImpactMinForceThreshold;
+					character->fields._data->fields.LargeImpactMinForceThreshold = default_LargeImpactMinForceThreshold;
+					character->fields._data->fields.anyCollisionStunForce = default_anyCollisionStunForce;
+					character->fields._data->fields.dynamicCollisionStunForce = default_dynamicCollisionStunForce;
+				}
 
 				character->fields._ragdollController->fields.CollisionThreshold = settings::movement::disable_object_collisions ? FLT_MAX : default_CollisionThreshold;
 				if ( settings::movement::disable_object_collisions )
