@@ -21,6 +21,7 @@ namespace settings {
 		bool make_me_reach = false;
 		bool player_esp_enabled = false;
 		bool super_grab_enabled = false;
+		float grabber_velocity = 1;
 	};
 };
 namespace cheat_helper {
@@ -60,6 +61,15 @@ namespace menu {
 		ImGui::SliderInt( name, val, min, max );
 
 		ImGui::PopStyleColor( 2 );
+	}
+
+	void draw_slider(const char* name, float* val, float min, float max) {
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 92.f / 255.f, 196.f / 255.f, 1.f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.f, 92.f / 255.f, 196.f / 255.f, 1.f });
+
+		ImGui::SliderFloat(name, val, min, max);
+
+		ImGui::PopStyleColor(2);
 	}
 
 	void draw_tab( const char* name, bool& active ) {
@@ -119,6 +129,7 @@ namespace menu {
 			//draw_button( "Make me rich", settings::cheat::make_me_reach );
 			draw_button( "Player ESP", settings::cheat::player_esp_enabled );
 			draw_button( "Super grab", settings::cheat::super_grab_enabled );
+			draw_slider( "Grabber vlocity", &settings::cheat::grabber_velocity, 0, 1);
 		}
 		ImGui::End( );
 	}
