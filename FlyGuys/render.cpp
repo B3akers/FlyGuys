@@ -57,6 +57,8 @@ const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
 const float default_forceReleaseRegrabCooldown = 1.0f;
 const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
+const float default_playerGrabBreakSeparationForce = 7.0f;
+const float default_playerGrabbeeInvulnerabilityWindow = 1.5f;
 
 namespace game {
 	uintptr_t game = 0;
@@ -475,6 +477,8 @@ void update( ) {
 					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = 0;
 					character->fields._data->fields.forceReleaseRegrabCooldown = 0;
 					character->fields._data->fields.breakGrabAngle = 360;
+					character->fields._data->fields.playerGrabBreakSeparationForce = 0.f;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = 0.f;
 				} else {
 					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
 					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
@@ -490,6 +494,8 @@ void update( ) {
 					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
 					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
 					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
+					character->fields._data->fields.playerGrabBreakSeparationForce = default_playerGrabBreakSeparationForce;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = default_playerGrabbeeInvulnerabilityWindow;
 				}
 
 				if ( settings::movement::fly_enabled ) {
