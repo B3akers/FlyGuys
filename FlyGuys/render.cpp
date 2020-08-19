@@ -65,6 +65,13 @@ const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
 const float default_forceReleaseRegrabCooldown = 1.0f;
 const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
+const float default_playerGrabBreakSeparationForce = 7.0f;
+const float default_playerGrabbeeInvulnerabilityWindow = 1.5f;
+const float default_objectGrabAdditionalForceScale = 10.0f;
+const float default_objectGrabAdditionalPushForceScale = 3.0f;
+const float default_carryAlwaysLoseTussleWhenGrabbed = 1.0f;
+const float default_playerGrabberVelocityComponent = 0.1000000015f;
+const float default_playerGrabbeeVelocityComponent = 0.200000003f;
 
 namespace game {
 	uintptr_t game = 0;
@@ -475,6 +482,8 @@ void update( ) {
 					character->fields._data->fields.armLength = FLT_MAX;
 					character->fields._data->fields.playerGrabCheckPredictionBase = FLT_MAX;
 					character->fields._data->fields.playerGrabMaxHeightDifference = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalForceScale = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = FLT_MAX;
 					character->fields._data->fields.playerGrabbeeMaxForce = 0;
 					character->fields._data->fields.playerGrabImmediateVelocityReduction = 1;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
@@ -483,6 +492,12 @@ void update( ) {
 					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = 0;
 					character->fields._data->fields.forceReleaseRegrabCooldown = 0;
 					character->fields._data->fields.breakGrabAngle = 360;
+					character->fields._data->fields.playerGrabBreakSeparationForce = 0.f;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = 0.f;
+					character->fields._data->fields.carryPickupDuration = 0.f;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = 0.f;
+					character->fields._data->fields.playerGrabberVelocityComponent = settings::cheat::grabber_velocity;
+					character->fields._data->fields.playerGrabbeeVelocityComponent = 1 - settings::cheat::grabber_velocity;
 				} else {
 					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
 					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
@@ -498,6 +513,14 @@ void update( ) {
 					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
 					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
 					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
+					character->fields._data->fields.playerGrabBreakSeparationForce = default_playerGrabBreakSeparationForce;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = default_playerGrabbeeInvulnerabilityWindow;
+					character->fields._data->fields.objectGrabAdditionalForceScale = default_objectGrabAdditionalForceScale;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = default_objectGrabAdditionalPushForceScale;
+					character->fields._data->fields.carryPickupDuration = default_carryPickupDuration;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = default_carryAlwaysLoseTussleWhenGrabbed;
+					character->fields._data->fields.playerGrabberVelocityComponent = default_playerGrabberVelocityComponent;
+					character->fields._data->fields.playerGrabbeeVelocityComponent = default_playerGrabbeeVelocityComponent;
 				}
 
 				if ( settings::movement::fly_enabled ) {
