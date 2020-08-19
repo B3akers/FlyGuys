@@ -488,8 +488,8 @@ void update( ) {
 					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = 0.f;
 					character->fields._data->fields.carryPickupDuration = 0.f;
 					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = 0.f;
-					character->fields._data->fields.playerGrabberVelocityComponent = settings::cheat::grabber_velocity;
-					character->fields._data->fields.playerGrabbeeVelocityComponent = 1 - settings::cheat::grabber_velocity;
+					character->fields._data->fields.playerGrabberVelocityComponent = 1 - settings::cheat::grabber_velocity;
+					character->fields._data->fields.playerGrabbeeVelocityComponent = settings::cheat::grabber_velocity;
 				} else {
 					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
 					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
