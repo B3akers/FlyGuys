@@ -39,6 +39,14 @@ const float default_max_speed = 9.500000f;
 
 const float default_anyCollisionStunForce = 28.000000f;
 const float default_dynamicCollisionStunForce = 10.000000f;
+const float default_stumbleBackAngle = 80.0f;
+const float default_fallOverAngle = 30.0f;
+const float default_collisionPlayerToPlayerUnpinMultiplier = 0.200000003f;
+const float default_minStunTime = 0.1000000015f;
+const float default_maxGroundedStunTime = 5.0f;
+const float default_SmallImpactMinForceThreshold = 8.0f;
+const float default_MediumImpactMinForceThreshold = 10.0f;
+const float default_LargeImpactMinForceThreshold = 2000.0f;
 const float default_CollisionThreshold = 14.000000f;
 const float default_carryMaxSpeed = 8.000000f;
 const float default_carryPickupDuration = 0.100000f;
@@ -57,6 +65,13 @@ const float default_playerGrabBreakTimeJumpInfluence = 0.01999999955f;
 const float default_forceReleaseRegrabCooldown = 1.0f;
 const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
+const float default_playerGrabBreakSeparationForce = 7.0f;
+const float default_playerGrabbeeInvulnerabilityWindow = 1.5f;
+const float default_objectGrabAdditionalForceScale = 10.0f;
+const float default_objectGrabAdditionalPushForceScale = 3.0f;
+const float default_carryAlwaysLoseTussleWhenGrabbed = 1.0f;
+const float default_playerGrabberVelocityComponent = 0.1000000015f;
+const float default_playerGrabbeeVelocityComponent = 0.200000003f;
 
 namespace game {
 	uintptr_t game = 0;
@@ -467,6 +482,8 @@ void update( ) {
 					character->fields._data->fields.armLength = FLT_MAX;
 					character->fields._data->fields.playerGrabCheckPredictionBase = FLT_MAX;
 					character->fields._data->fields.playerGrabMaxHeightDifference = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalForceScale = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = FLT_MAX;
 					character->fields._data->fields.playerGrabbeeMaxForce = 0;
 					character->fields._data->fields.playerGrabImmediateVelocityReduction = 1;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
@@ -475,6 +492,12 @@ void update( ) {
 					character->fields._data->fields.playerGrabBreakTimeJumpInfluence = 0;
 					character->fields._data->fields.forceReleaseRegrabCooldown = 0;
 					character->fields._data->fields.breakGrabAngle = 360;
+					character->fields._data->fields.playerGrabBreakSeparationForce = 0.f;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = 0.f;
+					character->fields._data->fields.carryPickupDuration = 0.f;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = 0.f;
+					character->fields._data->fields.playerGrabberVelocityComponent = settings::cheat::grabber_velocity;
+					character->fields._data->fields.playerGrabbeeVelocityComponent = 1 - settings::cheat::grabber_velocity;
 				} else {
 					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
 					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
@@ -490,6 +513,14 @@ void update( ) {
 					character->fields._data->fields.forceReleaseRegrabCooldown = default_forceReleaseRegrabCooldown;
 					character->fields._data->fields.breakGrabAngle = default_breakGrabAngle;
 					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
+					character->fields._data->fields.playerGrabBreakSeparationForce = default_playerGrabBreakSeparationForce;
+					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = default_playerGrabbeeInvulnerabilityWindow;
+					character->fields._data->fields.objectGrabAdditionalForceScale = default_objectGrabAdditionalForceScale;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = default_objectGrabAdditionalPushForceScale;
+					character->fields._data->fields.carryPickupDuration = default_carryPickupDuration;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = default_carryAlwaysLoseTussleWhenGrabbed;
+					character->fields._data->fields.playerGrabberVelocityComponent = default_playerGrabberVelocityComponent;
+					character->fields._data->fields.playerGrabbeeVelocityComponent = default_playerGrabbeeVelocityComponent;
 				}
 
 				if ( settings::movement::fly_enabled ) {
@@ -519,8 +550,30 @@ void update( ) {
 					cheat_helper::disable_fly = false;
 				}
 
-				character->fields._data->fields.anyCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_anyCollisionStunForce;
-				character->fields._data->fields.dynamicCollisionStunForce = settings::movement::disable_stun_collision ? FLT_MAX : default_dynamicCollisionStunForce;
+				if (settings::movement::disable_stun_collision) {
+					character->fields._data->fields.stumbleBackAngle = 0.f;
+					character->fields._data->fields.fallOverAngle = 0.f;
+					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = 0.f;
+					character->fields._data->fields.minStunTime = 0.f;
+					character->fields._data->fields.maxGroundedStunTime = 0.f;
+					character->fields._data->fields.SmallImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.MediumImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.LargeImpactMinForceThreshold = 0.f;
+					character->fields._data->fields.anyCollisionStunForce = FLT_MAX;
+					character->fields._data->fields.dynamicCollisionStunForce = FLT_MAX;
+				}
+				else {
+					character->fields._data->fields.stumbleBackAngle = default_stumbleBackAngle;
+					character->fields._data->fields.fallOverAngle = default_fallOverAngle;
+					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = default_collisionPlayerToPlayerUnpinMultiplier;
+					character->fields._data->fields.minStunTime = default_minStunTime;
+					character->fields._data->fields.maxGroundedStunTime = default_maxGroundedStunTime;
+					character->fields._data->fields.SmallImpactMinForceThreshold = default_SmallImpactMinForceThreshold;
+					character->fields._data->fields.MediumImpactMinForceThreshold = default_MediumImpactMinForceThreshold;
+					character->fields._data->fields.LargeImpactMinForceThreshold = default_LargeImpactMinForceThreshold;
+					character->fields._data->fields.anyCollisionStunForce = default_anyCollisionStunForce;
+					character->fields._data->fields.dynamicCollisionStunForce = default_dynamicCollisionStunForce;
+				}
 
 				character->fields._ragdollController->fields.CollisionThreshold = settings::movement::disable_object_collisions ? FLT_MAX : default_CollisionThreshold;
 				if ( settings::movement::disable_object_collisions )
