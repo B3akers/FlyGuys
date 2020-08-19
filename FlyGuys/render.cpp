@@ -59,6 +59,10 @@ const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
 const float default_playerGrabBreakSeparationForce = 7.0f;
 const float default_playerGrabbeeInvulnerabilityWindow = 1.5f;
+const float default_objectGrabAdditionalForceScale = 10;
+const float default_objectGrabAdditionalPushForceScale = 3;
+const float default_carryPickupDuration = 0.1000000015;
+const float default_carryAlwaysLoseTussleWhenGrabbed = 1;
 
 namespace game {
 	uintptr_t game = 0;
@@ -469,6 +473,8 @@ void update( ) {
 					character->fields._data->fields.armLength = FLT_MAX;
 					character->fields._data->fields.playerGrabCheckPredictionBase = FLT_MAX;
 					character->fields._data->fields.playerGrabMaxHeightDifference = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalForceScale = FLT_MAX;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = FLT_MAX;
 					character->fields._data->fields.playerGrabbeeMaxForce = 0;
 					character->fields._data->fields.playerGrabImmediateVelocityReduction = 1;
 					character->fields._data->fields.playerGrabberDragDirectionContribution = 1;
@@ -479,6 +485,8 @@ void update( ) {
 					character->fields._data->fields.breakGrabAngle = 360;
 					character->fields._data->fields.playerGrabBreakSeparationForce = 0.f;
 					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = 0.f;
+					character->fields._data->fields.carryPickupDuration = 0.f;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = 0.f;
 				} else {
 					character->fields._data->fields.playerGrabDetectRadius = default_playerGrabDetectRadius;
 					character->fields._data->fields.playerGrabCheckDistance = default_playerGrabCheckDistance;
@@ -496,6 +504,10 @@ void update( ) {
 					character->fields._data->fields.playerGrabbeeMaxForce = default_playerGrabbeeMaxForce;
 					character->fields._data->fields.playerGrabBreakSeparationForce = default_playerGrabBreakSeparationForce;
 					character->fields._data->fields.playerGrabbeeInvulnerabilityWindow = default_playerGrabbeeInvulnerabilityWindow;
+					character->fields._data->fields.objectGrabAdditionalForceScale = default_objectGrabAdditionalForceScale;
+					character->fields._data->fields.objectGrabAdditionalPushForceScale = default_objectGrabAdditionalPushForceScale;
+					character->fields._data->fields.carryPickupDuration = default_carryPickupDuration;
+					character->fields._data->fields.carryAlwaysLoseTussleWhenGrabbed = default_carryAlwaysLoseTussleWhenGrabbed;
 				}
 
 				if ( settings::movement::fly_enabled ) {
