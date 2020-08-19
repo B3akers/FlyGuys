@@ -59,11 +59,11 @@ const float default_breakGrabAngle = 75.0f;
 const float default_playerGrabbeeMaxForce = 1.0f;
 const float default_playerGrabBreakSeparationForce = 7.0f;
 const float default_playerGrabbeeInvulnerabilityWindow = 1.5f;
-const float default_objectGrabAdditionalForceScale = 10;
-const float default_objectGrabAdditionalPushForceScale = 3;
-const float default_carryAlwaysLoseTussleWhenGrabbed = 1;
-const float default_playerGrabberVelocityComponent = 0.1000000015;
-const float default_playerGrabbeeVelocityComponent = 0.200000003;
+const float default_objectGrabAdditionalForceScale = 10.0f;
+const float default_objectGrabAdditionalPushForceScale = 3.0f;
+const float default_carryAlwaysLoseTussleWhenGrabbed = 1.0f;
+const float default_playerGrabberVelocityComponent = 0.1000000015f;
+const float default_playerGrabbeeVelocityComponent = 0.200000003f;
 
 namespace game {
 	uintptr_t game = 0;
