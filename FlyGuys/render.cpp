@@ -389,6 +389,8 @@ void update( ) {
 	game::main_camera = std::uintptr_t( 0 );
 	auto gameobjectmanager = *reinterpret_cast<game_object_manager**>( game::unity + signatures::game_object_manager );
 	for ( auto i = gameobjectmanager->tagged_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_tagged_object ); i = i->next_node ) {
+		if ( !i )
+			break;
 		auto gameobject = i->object;
 		if ( gameobject->get_object_tag( ) == 5 ) {
 			auto component_size = *reinterpret_cast<int32_t*>( std::uintptr_t( gameobject ) + unity::components_size );
