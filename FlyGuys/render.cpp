@@ -420,26 +420,6 @@ void update( ) {
 	if ( !game::main_camera )
 		return;
 
-	/*patched
-	if ( settings::cheat::make_me_reach ) {
-		auto catapult_services = *reinterpret_cast<FGClient_CatapultServices_CatapultServices_c**>( game::game + signatures::catapult_services );
-		if ( !catapult_services )
-			return;
-
-		auto catapult_services_instance = catapult_services->static_fields->_Instance_k__BackingField;
-		if ( !catapult_services_instance )
-			return;
-
-		auto wallet_service = reinterpret_cast<FGClient_CatapultServices_PlayerWalletService_o*>( catapult_services_instance->fields._PlayerWalletService_k__BackingField );
-		if ( !wallet_service )
-			return;
-
-		wallet_service->fields._Wallet_k__BackingField->fields._Kudos_k__BackingField = 1000000;
-		wallet_service->fields._Wallet_k__BackingField->fields._Crowns_k__BackingField = 10000;
-
-		settings::cheat::make_me_reach = false;
-	}*/
-
 	auto& io = ImGui::GetIO( );
 
 	const constexpr auto StateGameInProgress = fnv::hash_constexpr( "StateGameInProgress" );
@@ -464,6 +444,8 @@ void update( ) {
 		auto current_game_level = game_state_view->fields.CurrentGameLevelName;
 		if ( !current_game_level )
 			return;
+
+		client_game_manager->fields._characterDataMonitor->fields._timeToRunNextCharacterControllerDataCheck = FLT_MAX;
 
 		auto game_level = fnv::whash_runtime( current_game_level->fields.c_str );
 
@@ -497,8 +479,8 @@ void update( ) {
 			if ( character->fields._IsLocalPlayer_k__BackingField ) {
 				auto game_object = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( std::uintptr_t( character ) + unity::native_ptr ) + unity::compoment_owner );
 				auto character_transform = *reinterpret_cast<uintptr_t*> ( *reinterpret_cast<uintptr_t*> ( game_object + unity::components_ptr ) + unity::transform_compoment );
-				
-				if (settings::cheat::super_grab_enabled) {
+
+				if ( settings::cheat::super_grab_enabled ) {
 					character->fields._data->fields.playerGrabDetectRadius = FLT_MAX;
 					character->fields._data->fields.playerGrabCheckDistance = FLT_MAX;
 					character->fields._data->fields.playerGrabberMaxForce = FLT_MAX;
@@ -574,7 +556,7 @@ void update( ) {
 					cheat_helper::disable_fly = false;
 				}
 
-				if (settings::movement::disable_stun_collision) {
+				if ( settings::movement::disable_stun_collision ) {
 					character->fields._data->fields.stumbleBackAngle = 0.f;
 					character->fields._data->fields.fallOverAngle = 0.f;
 					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = 0.f;
@@ -585,8 +567,7 @@ void update( ) {
 					character->fields._data->fields.LargeImpactMinForceThreshold = 0.f;
 					character->fields._data->fields.anyCollisionStunForce = FLT_MAX;
 					character->fields._data->fields.dynamicCollisionStunForce = FLT_MAX;
-				}
-				else {
+				} else {
 					character->fields._data->fields.stumbleBackAngle = default_stumbleBackAngle;
 					character->fields._data->fields.fallOverAngle = default_fallOverAngle;
 					character->fields._data->fields.collisionPlayerToPlayerUnpinMultiplier = default_collisionPlayerToPlayerUnpinMultiplier;
@@ -624,10 +605,10 @@ void update( ) {
 						}
 					}
 				}
-				if (settings::cheat::player_esp_enabled) {
+				if ( settings::cheat::player_esp_enabled ) {
 					vector vec_min, vec_max;
-					if (get_bounding_box2d(character->fields._collider, vec_min, vec_max))
-						draw_manager::add_rect_on_screen(vec_min, vec_max, ImColor(0.f, 1.f, 0.f), 0.f, -1, 2.f);
+					if ( get_bounding_box2d( character->fields._collider, vec_min, vec_max ) )
+						draw_manager::add_rect_on_screen( vec_min, vec_max, ImColor( 0.f, 1.f, 0.f ), 0.f, -1, 2.f );
 				}
 			}
 		}
@@ -636,8 +617,8 @@ void update( ) {
 			game_level == round_tip_toe ||
 			game_level == round_match_fall ) {
 			auto gameobjectmanager = *reinterpret_cast<game_object_manager**>( game::unity + signatures::game_object_manager );
-			for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {	
-			
+			for ( auto i = gameobjectmanager->active_objects; std::uintptr_t( i ) != std::uintptr_t( &gameobjectmanager->last_active_object ); i = i->next_node ) {
+
 				if ( !i )
 					break;
 

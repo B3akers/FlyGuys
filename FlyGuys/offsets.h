@@ -31,11 +31,11 @@ namespace signatures {
 		get_main_camera = 0x0909890,
 		swap_chain = 0x0462B20,
 		game_object_manager = 0x17B70E8,
-		global_game_state = 45847968, //Class$MPG.Utility.Singleton<GlobalGameStateClient>
+		global_game_state = 45900040, //Class$MPG.Utility.Singleton<GlobalGameStateClient>
 		catapult_services = 45843544, //Class$FGClient.CatapultServices.CatapultServices
-		re_input = 46143608, //Class$Rewired.ReInput
-		cursor_manager = 45921472, //Class$CursorManager
-		get_bound = 23004128, //UnityEngine.Collider$$get_bounds
+		re_input = 46196304, //Class$Rewired.ReInput
+		cursor_manager = 45973656, //Class$CursorManager
+		get_bound = 32337968, //UnityEngine.Collider$$get_bounds
 	};
 };
 

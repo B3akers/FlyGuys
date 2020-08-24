@@ -38,7 +38,6 @@ namespace settings {
 
 	namespace cheat {
 		extern bool hide_enabled_cheats;
-		extern bool make_me_reach;
 		extern bool player_esp_enabled;
 		extern bool super_grab_enabled;
 		extern float grabber_velocity;
@@ -50,7 +49,7 @@ namespace cheat_helper {
 
 };
 
-namespace menu { 
+namespace menu {
 	void draw( );
 	void update_keys( );
 	void update_indicators( );

@@ -2398,7 +2398,7 @@ bool ImGui::SliderScalar( const char* label, ImGuiDataType data_type, void* p_da
 	ImGuiContext& g = *GImGui;
 	const ImGuiStyle& style = g.Style;
 	const ImGuiID id = window->GetID( label );
-	const float w = 125.f;//CalcItemWidth();
+	const float w = CalcItemWidth();
 
 	const ImVec2 label_size = CalcTextSize( label, NULL, true );
 	const ImRect frame_bb( window->DC.CursorPos, window->DC.CursorPos + ImVec2( w, label_size.y + style.FramePadding.y * 2.0f ) );

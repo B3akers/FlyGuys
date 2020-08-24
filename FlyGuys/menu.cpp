@@ -43,7 +43,6 @@ namespace settings {
 	};
 	namespace cheat {
 		bool hide_enabled_cheats = false;
-		bool make_me_reach = false;
 		bool player_esp_enabled = false;
 		bool super_grab_enabled = false;
 		float grabber_velocity = 1;
@@ -70,7 +69,7 @@ namespace menu {
 
 	void draw_button( const char* name, bool& config_key, bool* change_opositive = nullptr ) {
 		push_color_for_button( config_key );
-		if ( ImGui::Button( name, { 125,20 } ) ) {
+		if ( ImGui::Button( name, { 125 + 50,20 } ) ) {
 			config_key = !config_key;
 			if ( change_opositive )
 				*change_opositive = !config_key;
@@ -83,6 +82,7 @@ namespace menu {
 		ImGui::PushStyleColor( ImGuiCol_Button, ImVec4 { 0.f, 92.f / 255.f, 196.f / 255.f, 1.f } );
 		ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4 { 0.f, 92.f / 255.f, 196.f / 255.f, 1.f } );
 
+		ImGui::SetNextItemWidth( 125.f + 50.f );
 		ImGui::SliderInt( name, val, min, max );
 
 		ImGui::PopStyleColor( 2 );
@@ -92,6 +92,7 @@ namespace menu {
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 92.f / 255.f, 196.f / 255.f, 1.f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.f, 92.f / 255.f, 196.f / 255.f, 1.f });
 
+		ImGui::SetNextItemWidth( 125.f + 50.f );
 		ImGui::SliderFloat(name, val, min, max);
 
 		ImGui::PopStyleColor(2);
@@ -99,7 +100,7 @@ namespace menu {
 
 	void draw_tab( const char* name, bool& active ) {
 		ImGui::Text( name );
-		ImGui::SameLine( 118 );
+		ImGui::SameLine( 118 + 50 );
 
 		ImGui::PushStyleColor( ImGuiCol_Button, ImVec4 { 0.f, 92.f / 255.f, 196.f / 255.f, 1.f } );
 		ImGui::PushStyleColor( ImGuiCol_ButtonHovered, ImVec4 { 0.f, 92.f / 255.f, 196.f / 255.f, 1.f } );
@@ -128,7 +129,7 @@ namespace menu {
 			} );
 
 		ImGui::Begin( "tab_movement", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar );
-		ImGui::SetWindowSize( { 131,0 }, ImGuiCond_Always );
+		ImGui::SetWindowSize( { 131 + 50,0 }, ImGuiCond_Always );
 		draw_tab( "Movement", movement_tab_active );
 		if ( movement_tab_active ) {
 			draw_button( "Fly", settings::movement::fly_enabled, &cheat_helper::disable_fly );
@@ -139,7 +140,7 @@ namespace menu {
 		ImGui::End( );
 
 		ImGui::Begin( "tab_collisions", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar );
-		ImGui::SetWindowSize( { 131,0 }, ImGuiCond_Always );
+		ImGui::SetWindowSize( { 131 + 50,0 }, ImGuiCond_Always );
 		draw_tab( "Collisions", collisions_tab_active );
 		if ( collisions_tab_active ) {
 			draw_button( "Disable stun", settings::movement::disable_stun_collision );
@@ -148,10 +149,9 @@ namespace menu {
 		ImGui::End( );
 
 		ImGui::Begin( "tab_misc", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar );
-		ImGui::SetWindowSize( { 131,0 }, ImGuiCond_Always );
+		ImGui::SetWindowSize( { 131 + 50,0 }, ImGuiCond_Always );
 		draw_tab( "Misc", misc_tab_active );
 		if ( misc_tab_active ) {
-			//draw_button( "Make me rich", settings::cheat::make_me_reach );
 			draw_button( "Hide enable cheats", settings::cheat::hide_enabled_cheats);
 			draw_button( "Player ESP", settings::cheat::player_esp_enabled );
 			draw_button( "Super grab", settings::cheat::super_grab_enabled );
@@ -249,7 +249,7 @@ namespace menu {
 		y += text_size.y + 4.f;
 		y += text_size.y + 4.f;
 
-		draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Enable cheats:");
+		draw_manager::add_text_on_screen({ 10,y }, 0xFFFFFFFF, 18, "Enabled cheats:");
 		y += text_size.y + 4.f;
 
 		if ( settings::movement::fly_enabled ) {
